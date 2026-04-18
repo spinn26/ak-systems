@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "PowerShell(npm install framer-motion react-hook-form zod \"@hookform/resolvers\" lucide-react resend 2>&1)",
+      "PowerShell(npx next build 2>&1)",
+      "PowerShell(npx next dev --port 3030 2>&1)",
+      "Bash(curl -sf http://localhost:3030/ -o /dev/null)",
+      "PowerShell(\\(Invoke-WebRequest -UseBasicParsing http://localhost:3030/ -TimeoutSec 30\\).StatusCode)",
+      "PowerShell(try { $r = Invoke-WebRequest -UseBasicParsing http://127.0.0.1:3030/ -TimeoutSec 60; \"Status: $\\($r.StatusCode\\) Length: $\\($r.Content.Length\\)\" } catch { \"ERR: $_\" })",
+      "PowerShell(Stop-Process -Force)",
+      "PowerShell(\"killed\")",
+      "PowerShell(Stop-Process -Force 2>$null)",
+      "PowerShell(\"ok\")",
+      "PowerShell(try { $r = Invoke-WebRequest -UseBasicParsing http://127.0.0.1:3030/ -TimeoutSec 10; \"Status: $\\($r.StatusCode\\)\" } catch { \"ERR: $\\($_.Exception.Message\\)\" })",
+      "PowerShell($c = Get-NetTCPConnection -LocalPort 3030 -ErrorAction SilentlyContinue | Select-Object -First 1; if \\($c\\) { Stop-Process -Id $c.OwningProcess -Force -ErrorAction SilentlyContinue; \"killed PID $\\($c.OwningProcess\\)\" } else { \"no listener\" })",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force 2>$null; Start-Sleep -Seconds 1; Get-NetTCPConnection -LocalPort 3030 -ErrorAction SilentlyContinue | ForEach-Object { try { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue } catch {} }; \"ok\")",
+      "PowerShell(npm uninstall resend 2>&1)",
+      "PowerShell(gh --version 2>&1)",
+      "PowerShell(git init -b main 2>&1)",
+      "PowerShell(git config user.name 2>&1)",
+      "PowerShell(git config user.email 2>&1)",
+      "PowerShell(git add -A)",
+      "PowerShell(git rm --cached -r . --quiet 2>&1)"
+    ]
+  }
+}
