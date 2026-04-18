@@ -33,6 +33,9 @@ export function Analytics() {
 
   if (!metrikaId || !granted) return null;
 
+  const id = Number(metrikaId);
+  if (!Number.isFinite(id)) return null;
+
   return (
     <>
       <Script id="ym" strategy="afterInteractive">{`
@@ -41,19 +44,21 @@ export function Analytics() {
         for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
         k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
         (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-        ym(${metrikaId}, "init", {
-          ssr: true,
-          webvisor: true,
-          clickmap: true,
-          trackLinks: true,
-          accurateTrackBounce: true,
-          ecommerce: "dataLayer"
-        });
+        try {
+          window.ym && window.ym(${id}, "init", {
+            ssr: true,
+            webvisor: true,
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true,
+            ecommerce: "dataLayer"
+          });
+        } catch (e) { console.warn("ym init skipped", e); }
       `}</Script>
       <noscript>
         <div>
           <img
-            src={`https://mc.yandex.ru/watch/${metrikaId}`}
+            src={`https://mc.yandex.ru/watch/${id}`}
             style={{ position: "absolute", left: -9999 }}
             alt=""
           />
