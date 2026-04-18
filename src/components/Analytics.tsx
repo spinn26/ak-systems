@@ -7,7 +7,7 @@ const CONSENT_KEY = "aks_cookie_consent_v1";
 
 declare global {
   interface Window {
-    ym?: (...args: unknown[]) => void;
+    ym?: ((...args: unknown[]) => void) & { a?: unknown[][]; l?: number };
     dataLayer?: unknown[];
   }
 }
@@ -31,21 +31,18 @@ export function Analytics() {
     return () => window.removeEventListener("aks:consent:granted", onGranted);
   }, []);
 
-  if (!metrikaId || !granted) return null;
-
   const id = Number(metrikaId);
-  if (!Number.isFinite(id)) return null;
+  if (!Number.isFinite(id) || !granted) return null;
 
   return (
     <>
-      <Script id="ym" strategy="afterInteractive">{`
-        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+      <Script id="ym-init" strategy="afterInteractive">{`
+        (function(w){
+          w.ym = w.ym || function(){(w.ym.a = w.ym.a || []).push(arguments)};
+          w.ym.l = 1 * new Date();
+        })(window);
         try {
-          window.ym && window.ym(${id}, "init", {
+          window.ym(${id}, "init", {
             ssr: true,
             webvisor: true,
             clickmap: true,
@@ -55,6 +52,11 @@ export function Analytics() {
           });
         } catch (e) { console.warn("ym init skipped", e); }
       `}</Script>
+      <Script
+        id="ym-tag"
+        src="https://mc.yandex.ru/metrika/tag.js"
+        strategy="afterInteractive"
+      />
       <noscript>
         <div>
           <img
