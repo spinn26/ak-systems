@@ -8,12 +8,13 @@ import { Menu, X, Send } from "lucide-react";
 import { SITE } from "@/lib/site";
 
 const nav = [
-  { href: "#problems", label: "Проблемы" },
-  { href: "#products", label: "Продукты" },
-  { href: "#cases", label: "Кейсы" },
-  { href: "#process", label: "Процесс" },
-  { href: "#team", label: "Команда" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/bitrix24", label: "Битрикс24" },
+  { href: "/#problems", label: "Проблемы" },
+  { href: "/#products", label: "Продукты" },
+  { href: "/#cases", label: "Кейсы" },
+  { href: "/#process", label: "Процесс" },
+  { href: "/#team", label: "Команда" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 export function Header() {
@@ -77,7 +78,7 @@ export function Header() {
           >
             <Send size={15} strokeWidth={1.75} />
           </a>
-          <Button href="#contact" size="md">
+          <Button href="/#contact" size="md">
             Обсудить задачу
           </Button>
         </div>
@@ -107,7 +108,7 @@ export function Header() {
               </Link>
             ))}
             <Link
-              href="#contact"
+              href="/#contact"
               onClick={() => setOpen(false)}
               className="py-3 text-[17px] text-[var(--text)] border-b border-[var(--border)]"
             >
@@ -132,7 +133,7 @@ export function Header() {
             </div>
 
             <Button
-              href="#contact"
+              href="/#contact"
               size="lg"
               className="mt-6 w-full"
               onClick={() => setOpen(false)}

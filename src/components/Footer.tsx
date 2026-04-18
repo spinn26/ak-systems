@@ -23,13 +23,16 @@ export function Footer() {
             </div>
             <ul className="space-y-2.5 text-[14px]">
               {[
-                ["#problems", "Проблемы"],
-                ["#products", "Продукты"],
-                ["#cases", "Кейсы"],
-                ["#process", "Процесс"],
-                ["#team", "Команда"],
-                ["#faq", "FAQ"],
-                ["#contact", "Контакты"],
+                ["/bitrix24", "Битрикс24"],
+                ["/audit", "Аудит"],
+                ["/blog", "Блог"],
+                ["/#problems", "Проблемы"],
+                ["/#products", "Продукты"],
+                ["/#cases", "Кейсы"],
+                ["/#process", "Процесс"],
+                ["/#team", "Команда"],
+                ["/#faq", "FAQ"],
+                ["/#contact", "Контакты"],
               ].map(([href, label]) => (
                 <li key={href}>
                   <Link
