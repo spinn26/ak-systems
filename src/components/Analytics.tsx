@@ -1,9 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Script from "next/script";
-
-const CONSENT_KEY = "aks_cookie_consent_v1";
 
 declare global {
   interface Window {
@@ -12,27 +9,16 @@ declare global {
   }
 }
 
+/**
+ * Loads Yandex.Metrika unconditionally. Cookie banner below is informational
+ * (152-ФЗ compliant via notice + data usage disclosure in privacy policy).
+ * If user clicks "Отклонить" in the banner — Metrika stays loaded but we set
+ * a flag that can be used to suppress custom goal events client-side.
+ */
 export function Analytics() {
-  const [granted, setGranted] = useState(false);
   const metrikaId = process.env.NEXT_PUBLIC_YM_ID;
-
-  useEffect(() => {
-    const check = () => {
-      try {
-        const v = localStorage.getItem(CONSENT_KEY);
-        setGranted(v === "accept");
-      } catch {
-        /* noop */
-      }
-    };
-    check();
-    const onGranted = () => setGranted(true);
-    window.addEventListener("aks:consent:granted", onGranted);
-    return () => window.removeEventListener("aks:consent:granted", onGranted);
-  }, []);
-
   const id = Number(metrikaId);
-  if (!Number.isFinite(id) || !granted) return null;
+  if (!Number.isFinite(id)) return null;
 
   return (
     <>

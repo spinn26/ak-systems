@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
-const KEY = "aks_cookie_consent_v1";
+const KEY = "aks_cookie_notice_ack_v1";
 
 export function CookieBanner() {
   const [show, setShow] = useState(false);
@@ -18,16 +18,13 @@ export function CookieBanner() {
     }
   }, []);
 
-  const decide = (v: "accept" | "reject") => {
+  const acknowledge = () => {
     try {
-      localStorage.setItem(KEY, v);
+      localStorage.setItem(KEY, "1");
     } catch {
       /* noop */
     }
     setShow(false);
-    if (v === "accept") {
-      window.dispatchEvent(new CustomEvent("aks:consent:granted"));
-    }
   };
 
   return (
@@ -35,7 +32,7 @@ export function CookieBanner() {
       {show && (
         <motion.div
           role="dialog"
-          aria-label="Cookies"
+          aria-label="Использование cookies"
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
@@ -44,34 +41,27 @@ export function CookieBanner() {
         >
           <div className="p-5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-[0_8px_40px_rgba(0,0,0,0.5)]">
             <div className="mono text-[11px] uppercase tracking-[0.2em] text-[var(--text-muted)] mb-2">
-              Cookies
+              Cookies и аналитика
             </div>
             <p className="text-[13.5px] leading-[1.6] text-[var(--text-muted)]">
-              Сайт использует cookies для аналитики (Яндекс.Метрика) — помогают
-              нам видеть, как устроен путь на странице. Никаких рекламных
-              ретаргетингов.{" "}
+              Сайт использует cookies и Яндекс.Метрику, чтобы понимать, как
+              устроен путь пользователей на странице. Никаких рекламных
+              ретаргетингов и передачи данных третьим лицам.{" "}
               <Link
                 href="/privacy"
                 className="text-[var(--text)] underline decoration-[var(--border-strong)] underline-offset-2 hover:decoration-[var(--accent)]"
               >
-                Политика
+                Политика конфиденциальности
               </Link>
               .
             </p>
-            <div className="mt-4 flex gap-2">
+            <div className="mt-4">
               <button
                 type="button"
-                onClick={() => decide("accept")}
-                className="flex-1 h-10 rounded-lg bg-[var(--accent)] text-white text-[13.5px] font-medium hover:bg-[var(--accent-hover)] transition-colors"
+                onClick={acknowledge}
+                className="h-10 px-5 rounded-lg bg-[var(--accent)] text-white text-[13.5px] font-medium hover:bg-[var(--accent-hover)] transition-colors"
               >
-                Принять
-              </button>
-              <button
-                type="button"
-                onClick={() => decide("reject")}
-                className="flex-1 h-10 rounded-lg border border-[var(--border)] bg-transparent text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
-              >
-                Отклонить
+                Понятно
               </button>
             </div>
           </div>

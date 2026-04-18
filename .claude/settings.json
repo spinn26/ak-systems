@@ -21,7 +21,18 @@
       "PowerShell(git config user.name 2>&1)",
       "PowerShell(git config user.email 2>&1)",
       "PowerShell(git add -A)",
-      "PowerShell(git rm --cached -r . --quiet 2>&1)"
+      "PowerShell(git rm --cached -r . --quiet 2>&1)",
+      "PowerShell(git commit -m \"Initial commit: AK Systems landing + SEO pages + deploy configs\" 2>&1)",
+      "PowerShell(git push -u origin main 2>&1)",
+      "PowerShell(\"---\")",
+      "PowerShell(git add src/components/Analytics.tsx)",
+      "PowerShell(git commit -m \"Analytics: guard ym init with window check and Number validation\" 2>&1)",
+      "PowerShell(git push 2>&1)",
+      "PowerShell(git commit -m \"Analytics: split ym stub + tag.js into separate Scripts \\(standard YM pattern\\)\" 2>&1)",
+      "Bash(dir /c/Users/ENCODE/aksystems-bot/dist)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\ENCODE\\aksystems-bot"
     ]
   }
 }
