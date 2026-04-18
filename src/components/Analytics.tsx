@@ -9,44 +9,22 @@ declare global {
   }
 }
 
-/**
- * Loads Yandex.Metrika unconditionally. Cookie banner below is informational
- * (152-ФЗ compliant via notice + data usage disclosure in privacy policy).
- * If user clicks "Отклонить" in the banner — Metrika stays loaded but we set
- * a flag that can be used to suppress custom goal events client-side.
- */
 export function Analytics() {
-  const metrikaId = process.env.NEXT_PUBLIC_YM_ID;
-  const id = Number(metrikaId);
-  if (!Number.isFinite(id)) return null;
-
   return (
     <>
-      <Script id="ym-init" strategy="afterInteractive">{`
-        (function(w){
-          w.ym = w.ym || function(){(w.ym.a = w.ym.a || []).push(arguments)};
-          w.ym.l = 1 * new Date();
-        })(window);
-        try {
-          window.ym(${id}, "init", {
-            ssr: true,
-            webvisor: true,
-            clickmap: true,
-            trackLinks: true,
-            accurateTrackBounce: true,
-            ecommerce: "dataLayer"
-          });
-        } catch (e) { console.warn("ym init skipped", e); }
+      <Script id="ym-counter" strategy="afterInteractive">{`
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=108657630', 'ym');
+
+        ym(108657630, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
       `}</Script>
-      <Script
-        id="ym-tag"
-        src="https://mc.yandex.ru/metrika/tag.js"
-        strategy="afterInteractive"
-      />
       <noscript>
         <div>
           <img
-            src={`https://mc.yandex.ru/watch/${id}`}
+            src="https://mc.yandex.ru/watch/108657630"
             style={{ position: "absolute", left: -9999 }}
             alt=""
           />
