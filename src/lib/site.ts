@@ -3,7 +3,7 @@ export const SITE = {
   host: "aksystems.pro",
   name: "AK Systems",
   tagline: "Инженерные системы для бизнеса, который перерос таблицы",
-  email: "hello@aksys.ru",
+  email: "info@aksystems.pro",
   telegram: "@aksystems_sales_bot",
   telegramUrl: "https://t.me/aksystems_sales_bot",
   legal: {

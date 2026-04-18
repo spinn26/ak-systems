@@ -38,7 +38,7 @@ export function LeadMagnet() {
       });
       setDone(true);
     } catch {
-      setError("Не удалось отправить. Напишите на hello@aksys.ru.");
+      setError("Не удалось отправить. Напишите на info@aksystems.pro.");
     } finally {
       setLoading(false);
     }
