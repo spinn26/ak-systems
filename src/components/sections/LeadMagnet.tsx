@@ -7,6 +7,19 @@ import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { AmbientAurora } from "@/components/AmbientAurora";
 
+const PDF_URL = "/ak-systems-crm-checklist.pdf";
+const PDF_FILENAME = "ak-systems-crm-checklist.pdf";
+
+function triggerDownload() {
+  const a = document.createElement("a");
+  a.href = PDF_URL;
+  a.download = PDF_FILENAME;
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
 export function LeadMagnet() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,7 +36,8 @@ export function LeadMagnet() {
     }
     setLoading(true);
     try {
-      await fetch("/api/lead", {
+      // Fire-and-forget: не блокируем скачивание падением CRM-интеграции
+      fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -35,10 +49,15 @@ export function LeadMagnet() {
           consent: true,
           task: "[lead-magnet] Запрос чек-листа аудита CRM на 42 пункта.",
         }),
+      }).catch(() => {
+        /* игнорируем — пользователь PDF уже получит */
       });
+
+      // Мгновенно даём PDF
+      triggerDownload();
       setDone(true);
     } catch {
-      setError("Не удалось отправить. Напишите на info@aksystems.pro.");
+      setError("Что-то пошло не так. Скачайте напрямую по ссылке ниже.");
     } finally {
       setLoading(false);
     }
@@ -74,10 +93,7 @@ export function LeadMagnet() {
                     "Права и роли",
                     "Дисциплина работы команды",
                   ].map((l) => (
-                    <li
-                      key={l}
-                      className="inline-flex items-start gap-2"
-                    >
+                    <li key={l} className="inline-flex items-start gap-2">
                       <Check
                         size={15}
                         className="mt-[3px] text-[var(--accent-hover)]"
@@ -101,12 +117,30 @@ export function LeadMagnet() {
                         <Check size={18} />
                       </div>
                       <div className="text-[16px] font-medium text-[var(--text)]">
-                        Отправили на почту
+                        PDF готов
                       </div>
                       <p className="mt-2 text-[13.5px] leading-[1.6] text-[var(--text-muted)]">
-                        Проверьте почту. Если не пришло за 5 минут — загляните
-                        в «Спам» или напишите нам в Telegram.
+                        Скачивание должно начаться автоматически. Если нет —
+                        нажмите кнопку ниже.
                       </p>
+                      <div className="mt-4 flex flex-col sm:flex-row gap-2">
+                        <button
+                          type="button"
+                          onClick={triggerDownload}
+                          className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-lg bg-[var(--accent)] text-white text-[14px] font-medium hover:bg-[var(--accent-hover)] transition-colors"
+                        >
+                          <Download size={15} />
+                          Скачать PDF
+                        </button>
+                        <a
+                          href={PDF_URL}
+                          target="_blank"
+                          rel="noopener"
+                          className="inline-flex items-center justify-center h-11 px-4 rounded-lg border border-[var(--border)] text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
+                        >
+                          Открыть в браузере
+                        </a>
+                      </div>
                     </motion.div>
                   ) : (
                     <motion.form
@@ -148,8 +182,9 @@ export function LeadMagnet() {
                         </p>
                       )}
                       <p className="mt-3 text-[12px] leading-[1.6] text-[var(--text-dim)]">
-                        Отправим один раз, без рассылки. Никому ваш email не
-                        передадим.
+                        Скачивание начнётся сразу после нажатия кнопки. Ваш
+                        email попадёт к Аркадию — возможно, он предложит
+                        разобрать ваши ответы лично.
                       </p>
                     </motion.form>
                   )}
